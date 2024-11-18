@@ -76,4 +76,27 @@
 	JSTL(JSP Standard Tag Library)
 		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<c:forEach var="i" begin="1" end="5">
+		
+	액션태그
+	<jsp:forward> : 다른 사이트로 이동하는 행동
+	 
+	<jsp:include> : 정적인 페이지 포함
+	
+	<jsp:param> : 파라미터 값 전달
+	
+	<jsp:useBean> : 클래스 객체
+	
+	<jsp:setProperty> : 
+	
+	<jsp:getProperty> : 
+	
+	<jsp:include> : 
+	
+	<jsp:include> : 
+	
+	<jsp:include> : 
+	
+	<jsp:include> : 
+	
+	
 --%>
