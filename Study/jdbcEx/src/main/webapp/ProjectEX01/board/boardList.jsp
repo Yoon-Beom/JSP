@@ -91,7 +91,7 @@
         
 		<div class="search-write-container">
             <div class="search-container">
-                <select class="form-select" style="width: auto;">
+                <select id="searchType" class="form-select" style="width: auto;">
                     <option value="author">작성자</option>
                     <option value="title_content">제목, 내용</option>
                 </select>
@@ -113,7 +113,7 @@
                             <th>조회수</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="boardTableBody">
                         <c:forEach var="dto" items="${dtos}">
                             <tr>
                                 <td>${dto.bId}</td>
@@ -131,54 +131,55 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#searchButton').click(function() {
+        document.getElementById('searchButton').addEventListener('click', function() {
+        	console.log("검색 버튼이 클릭되었습니다.");
+            performSearch();
+        });
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') { // Enter key
+            	console.log("Enter 키가 눌렸습니다.");
                 performSearch();
-            });
-
-            $('#searchInput').keypress(function(e) {
-                if (e.which == 13) {  // Enter key
-                    performSearch();
-                }
-            });
-
-            function performSearch() {
-                var searchType = $('#searchType').val();
-                var searchQuery = $('#searchInput').val();
-
-                $.ajax({
-                    url: 'searchBoard.jsp',
-                    method: 'GET',
-                    data: { 
-                        type: searchType,
-                        query: searchQuery
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        updateTable(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error occurred: ' + error);
-                    }
-                });
-            }
-
-            function updateTable(data) {
-                var tbody = $('#boardTableBody');
-                tbody.empty();
-
-                $.each(data, function(i, item) {
-                    var row = '<tr>' +
-                        '<td>' + item.bId + '</td>' +
-                        '<td>' + item.bName + '</td>' +
-                        '<td class="title-column"><a href="contentView.jsp?bId=' + item.bId + '" class="text-decoration-none d-block">' + item.bTitle + '</a></td>' +
-                        '<td>' + item.bDate + '</td>' +
-                        '<td>' + item.bHit + '</td>' +
-                        '</tr>';
-                    tbody.append(row);
-                });
             }
         });
+
+        function performSearch() {
+        	console.log(document.getElementById('searchType'), document.getElementById('searchInput'));
+            var searchType = document.getElementById('searchType').value;
+            var searchQuery = document.getElementById('searchInput').value;
+            console.log("검색 타입: " + searchType + ", 검색어: " + searchQuery);
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'searchBoard.jsp?type=' + encodeURIComponent(searchType) + '&query=' + encodeURIComponent(searchQuery), true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) { // 요청 완료
+                    if (xhr.status === 200) { // 성공
+                        updateTable(JSON.parse(xhr.responseText));
+                    } else {
+                        console.error('Error occurred: ' + xhr.status);
+                    }
+                }
+            };
+
+            xhr.send();
+        }
+
+        function updateTable(data) {
+            var tbody = document.getElementById('boardTableBody');
+            tbody.innerHTML = ''; // 기존 내용을 지웁니다.
+
+            data.forEach(function(item) {
+                var row = '<tr>' +
+                    '<td>' + item.bId + '</td>' +
+                    '<td>' + item.bName + '</td>' +
+                    '<td class="title-column"><a href="contentView.jsp?bId=' + item.bId + '" class="text-decoration-none d-block">' + item.bTitle + '</a></td>' +
+                    '<td>' + item.bDate + '</td>' +
+                    '<td>' + item.bHit + '</td>' +
+                    '</tr>';
+                tbody.innerHTML += row; // 새로운 행 추가
+            });
+        }
     </script>
 </body>
 </html>

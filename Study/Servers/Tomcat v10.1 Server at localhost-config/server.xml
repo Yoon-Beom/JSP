@@ -142,7 +142,20 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="TestEx01" path="/TestEx01" reloadable="true" source="org.eclipse.jst.jee.server:TestEx01"/><Context docBase="jdbcEx" path="/jdbcEx" reloadable="true" source="org.eclipse.jst.jee.server:jdbcEx"/><Context docBase="TestEx03" path="/TestEx03" reloadable="true" source="org.eclipse.jst.jee.server:TestEx03"/><Context docBase="TestEx02" path="/TestEx02" reloadable="true" source="org.eclipse.jst.jee.server:TestEx02"/><Context docBase="ServletEx01" path="/ServletEx01" reloadable="true" source="org.eclipse.jst.jee.server:ServletEx01"/></Host>
+      <Context docBase="TestEx01" path="/TestEx01" reloadable="true" source="org.eclipse.jst.jee.server:TestEx01"/>
+      <Context docBase="jdbcEx" path="/jdbcEx" reloadable="true" source="org.eclipse.jst.jee.server:jdbcEx"/>
+      <Context docBase="TestEx03" path="/TestEx03" reloadable="true" source="org.eclipse.jst.jee.server:TestEx03"/>
+      <Context docBase="TestEx02" path="/TestEx02" reloadable="true" source="org.eclipse.jst.jee.server:TestEx02"/>
+      <Context docBase="ServletEx01" path="/ServletEx01" reloadable="true" source="org.eclipse.jst.jee.server:ServletEx01"/>
+      <Context docBase="dbcp" path="/dbcp" reloadable="true" source="org.eclipse.jst.jee.server:dbcp">
+      <Resource name="jdbc/myoracle" auth="Container"
+              type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@127.0.0.1:1521:XE"
+              username="jsp" password="1234" maxTotal="20" maxIdle="10"
+              maxWaitMillis="-1"/>
+      </Context>
+      
+      </Host>
     </Engine>
   </Service>
 </Server>
