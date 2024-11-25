@@ -115,4 +115,124 @@ public class MemberDAO {
 		
 		return mvo;
 	}
+	
+	public int confirmID(String userid) {
+		int result = -1;
+		String sql = "select userid from member where userid=?";
+		conn = null;
+		pstmt = null;
+		rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 1; // 사용자 id 중복 체크 성공
+			} else {
+				result = -1; // 사용자 id 중복 체크 실패
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) { rs.close(); }
+				if(pstmt != null) { pstmt.close(); }
+				if(conn != null) { conn.close(); }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	// 회원 정보 삽입하는 메서드 (insert)
+	public int insertMember(MemberVO mvo) {
+		int result = -1;
+		String sql = "insert into member values(?,?,?,?,?,?)";
+		
+		conn = null;
+		pstmt = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mvo.getName());
+			pstmt.setString(2, mvo.getUserid());
+			pstmt.setString(3, mvo.getPwd());
+			pstmt.setString(4, mvo.getEmail());
+			pstmt.setString(5, mvo.getPhone());
+			pstmt.setInt(6, mvo.getAdmin());
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) { pstmt.close(); }
+				if(conn != null) { conn.close(); }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	public int updateMember(MemberVO mvo) {
+		int result = -1;
+		String sql = "update member set pwd=?, email=?, phone=?, admin=? where userid=?";
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mvo.getPwd());
+			pstmt.setString(2, mvo.getEmail());
+			pstmt.setString(3, mvo.getPhone());
+			pstmt.setInt(4, mvo.getAdmin());
+			pstmt.setString(5, mvo.getUserid());
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) { pstmt.close(); }
+				if(conn != null) { conn.close(); }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	public int deleteMember(String userid) {
+		int result = -1;
+		String sql = "delete from member where userid=?";
+		
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) { pstmt.close(); }
+				if(conn != null) { conn.close(); }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
 }

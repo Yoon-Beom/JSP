@@ -20,7 +20,7 @@ function joinCheck() {
 		frm.userid.focus();
 		return false;
 	}	else if (document.frm.reid.value.length == 0) {
-		alert("아이디 중복 체크를 하지 않았습니다..");
+		alert("아이디 중복 체크를 하지 않았습니다.");
 		frm.pwd.focus();
 		return false;
 	}	else if (document.frm.pwd.value.length == 0) {
@@ -45,5 +45,12 @@ function idCheck() {
 	}
 	
 	var url = "idCheck.do?userid=" + document.frm.userid.value;
-	window.open(url, "_blacnk_1", "toolbar=no, menuba=no, scrollbars=yes, resizable=no, width=450, height=200");
+	window.open(url, "_blacnk_1", "toolbar=no, menuba=no, scrollbars=yes, resizable=no, width=450, height=400");
+}
+
+function idok(userid) {
+	console.log("idok start");
+	opener.frm.userid.value = document.frm.userid.value;
+	opener.frm.reid.value = document.frm.userid.value;
+	self.close();
 }

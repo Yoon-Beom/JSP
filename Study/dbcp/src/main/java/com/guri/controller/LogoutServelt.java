@@ -14,13 +14,13 @@ import java.io.IOException;
  * Servlet implementation class logoutServelt
  */
 @WebServlet("/logout.do")
-public class logoutServelt extends HttpServlet {
+public class LogoutServelt extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public logoutServelt() {
+    public LogoutServelt() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,8 +33,6 @@ public class logoutServelt extends HttpServlet {
 		session.invalidate();
 		RequestDispatcher rd = request.getRequestDispatcher("member/login.jsp");
 		rd.forward(request, response);
-		
-		response.sendRedirect(LEGACY_DO_HEAD);
 	}
 
 	/**
