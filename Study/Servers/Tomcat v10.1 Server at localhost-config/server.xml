@@ -148,13 +148,12 @@
       <Context docBase="TestEx02" path="/TestEx02" reloadable="true" source="org.eclipse.jst.jee.server:TestEx02"/>
       <Context docBase="ServletEx01" path="/ServletEx01" reloadable="true" source="org.eclipse.jst.jee.server:ServletEx01"/>
       <Context docBase="dbcp" path="/dbcp" reloadable="true" source="org.eclipse.jst.jee.server:dbcp">
-      <Resource name="jdbc/myoracle" auth="Container"
-              type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
-              url="jdbc:oracle:thin:@127.0.0.1:1521:XE"
-              username="jsp" password="1234" maxTotal="20" maxIdle="10"
-              maxWaitMillis="-1"/>
+      <Resource auth="Container" driverClassName="oracle.jdbc.OracleDriver" maxIdle="10" maxTotal="20" maxWaitMillis="-1" name="jdbc/myoracle" password="1234" type="javax.sql.DataSource" url="jdbc:oracle:thin:@127.0.0.1:1521:XE" username="jsp"/>
       </Context>
       
+      <Context docBase="Shopping" path="/Shopping" reloadable="true" source="org.eclipse.jst.jee.server:Shopping">
+      <Resource auth="Container" driverClassName="oracle.jdbc.OracleDriver" maxIdle="10" maxTotal="20" maxWaitMillis="-1" name="jdbc/shopping" password="1234" type="javax.sql.DataSource" url="jdbc:oracle:thin:@127.0.0.1:1521:XE" username="jsp"/>
+      </Context>
       </Host>
     </Engine>
   </Service>
