@@ -1,0 +1,86 @@
+package com.guri.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+/**
+ * Servlet implementation class UploadServlet
+ */
+@WebServlet("/upload.do")
+public class UploadServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public UploadServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		
+		PrintWriter out = response.getWriter();
+		
+		String savePath = "upload";
+		
+		int fileSize = 10 * 1024 * 1024;
+		
+		String encType = "UTF-8";
+		
+		ServletContext context = getServletContext();
+		
+		String uploadFilePath = context.getRealPath(savePath);
+		System.out.println("서버상의 실제 디렉토리 : " + uploadFilePath);
+		
+		try {
+			MultipartRequest multi = 
+					new MultipartRequest(
+							request, 
+							uploadFilePath,	// 서버상의 실제 디렉토리
+							fileSize,		// 최대 업로드 사이즈
+							encType,		// 인코딩 방법
+							// 동일한 이름이 존재하면 새로운 이름 부여하는 메소드
+							new DefaultFileRenamePolicy()
+							);
+			
+			// 업로드 된 파일 이름 출력
+			String fileName = multi.getFilesystemName("uploadFile");
+			
+			if(fileName == null) {
+				System.out.println("파일이 업로드 되지 않았습니다.");
+			} else {
+				out.println("<br> 글쓴이 : " + multi.getParameter("name"));
+				out.println("<br> 제목 : " + multi.getParameter("title"));
+				out.println("<br> 파일명 : " + fileName);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			out.close();
+		}
+	}
+
+}
